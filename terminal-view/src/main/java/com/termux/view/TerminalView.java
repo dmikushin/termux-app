@@ -314,14 +314,16 @@ public final class TerminalView extends View {
                 // https://cs.android.com/android/platform/superproject/+/android-11.0.0_r40:packages/inputmethods/LatinIME/java/src/com/android/inputmethod/latin/InputAttributes.java;l=79
                 outAttrs.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
             } else {
-                // Using InputType.NULL is the most correct input type and avoids issues with other hacks.
+                // Use TYPE_CLASS_TEXT with NO_SUGGESTIONS to enable voice input while avoiding keyboard issues.
+                // This allows voice input to work on most keyboards while preventing autocorrection and suggestions.
+                // Falls back to enforce-char-based-input mode for problematic keyboards.
                 //
                 // Previous keyboard issues:
                 // https://github.com/termux/termux-packages/issues/25
                 // https://github.com/termux/termux-app/issues/87.
                 // https://github.com/termux/termux-app/issues/126.
                 // https://github.com/termux/termux-app/issues/137 (japanese chars and TYPE_NULL).
-                outAttrs.inputType = InputType.TYPE_NULL;
+                outAttrs.inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
             }
         } else {
             // Corresponds to android:inputType="text"
