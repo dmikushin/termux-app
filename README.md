@@ -1,4 +1,4 @@
-# Termux application
+# Termux application (Voice Input Fork)
 
 [![Build status](https://github.com/termux/termux-app/workflows/Build/badge.svg)](https://github.com/termux/termux-app/actions)
 [![Testing status](https://github.com/termux/termux-app/workflows/Unit%20tests/badge.svg)](https://github.com/termux/termux-app/actions)
@@ -8,6 +8,23 @@
 
 
 [Termux](https://termux.com) is an Android terminal application and Linux environment.
+
+## ✨ About This Fork
+
+This fork **carefully restores voice input functionality** that was disabled in upstream Termux due to historical keyboard compatibility issues ([#25](https://github.com/termux/termux-packages/issues/25), [#87](https://github.com/termux/termux-app/issues/87), [#126](https://github.com/termux/termux-app/issues/126)).
+
+### What's New
+
+🎤 **Voice Input Support** - Dictation now works on modern Android keyboards (Google Gboard, SwiftKey, etc.)
+🌏 **CJK Language Support** - Fixes Chinese, Japanese, and Korean input (resolves [#137](https://github.com/termux/termux-app/issues/137))
+⚙️ **Backward Compatible** - Preserves the `enforce-char-based-input` setting as a fallback for problematic keyboards
+🔒 **Safe Implementation** - Uses `InputType.TYPE_CLASS_TEXT | TYPE_TEXT_FLAG_NO_SUGGESTIONS` to prevent autocorrection issues
+
+The change is minimal and surgical - replacing `InputType.TYPE_NULL` with `TYPE_CLASS_TEXT | TYPE_TEXT_FLAG_NO_SUGGESTIONS` allows the Android Input Method Engine (IME) to recognize the terminal as a valid text input field while maintaining terminal functionality through the `NO_SUGGESTIONS` flag.
+
+**For technical details, see commit [3305775a](https://github.com/dmikushin/termux-app/commit/3305775a7e37ff3076aab3028b5aabedf58a1fab).**
+
+---
 
 Note that this repository is for the app itself (the user interface and the terminal emulation). For the packages installable inside the app, see [termux/termux-packages](https://github.com/termux/termux-packages).
 
